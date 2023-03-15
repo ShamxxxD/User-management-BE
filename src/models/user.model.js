@@ -5,6 +5,7 @@ const UserSchema = new Schema(
     {
         username: { type: String, require: true, minlength: 5, unique: true },
         phone: { type: Number, require: false },
+        //TODO check validate email format, follow: https://gist.github.com/rupeshtiwari/acf770bfc85f3fe1f62a80b461abfc13
         email: {
             type: String,
             index: { unique: true },

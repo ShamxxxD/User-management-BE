@@ -9,11 +9,15 @@ class AuthController {
          const { username, email, password } = req.body;
 
          const isAdmin = username.startsWith('admin');
+
+         //TODO 'admin' : 'subscriber' -> should be create constants and reuse
          const role = isAdmin ? 'admin' : 'subscriber';
 
+         //TODO research and apply .lean() in mongo
          const usernameCheck = await User.findOne({ username });
          if (usernameCheck) return res.json({ msg: 'Username already used ', status: false });
 
+         //TODO research and apply .lean() in mongo
          const emailCheck = await User.findOne({ email });
          if (emailCheck) return res.json({ msg: 'Email already used ', status: false });
 
@@ -28,6 +32,8 @@ class AuthController {
 
          return res.json({ msg: 'Create new user successfully', user, status: true });
       } catch (error) {
+         //TODO do not need to use next() here
+         //TODO should be use: res.status(500).json(error);
          next(error);
       }
    }
