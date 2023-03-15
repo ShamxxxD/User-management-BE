@@ -1,17 +1,23 @@
 import User from '../models/user.model.js';
 
 class UserController {
-     async getUsers(req, res) {
-          const users = await User.find({});
-          res.json({ users: users });
-     }
+   async getAllUsers(req, res) {
+      try {
+         const users = await User.find({});
+         res.json({ users: users });
+      } catch (error) {
+         res.status(404).json(error);
+      }
+   }
 
-     async createUser(req, res) {
-          const users = await User.create({
-               name: 'Hồ Quốc Thông',
-          });
-
-          res.json(users);
-     }
+   async deleteUser(req, res) {
+      const userID = req.params.id;
+      try {
+         const users = await User.findByIdAndDelete({ _id: userID });
+         res.json({ users: users });
+      } catch (error) {
+         res.status(404).json(error);
+      }
+   }
 }
 export default new UserController();
