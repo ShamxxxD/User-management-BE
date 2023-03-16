@@ -3,7 +3,7 @@ import User from '../models/user.model.js';
 class UserController {
    async getAllUsers(req, res) {
       try {
-         const users = await User.find({});
+         const users = await User.find({}).lean();
          res.json({ users: users });
       } catch (error) {
          res.status(404).json(error);
@@ -11,10 +11,11 @@ class UserController {
    }
 
    async deleteUser(req, res) {
-      const userID = req.params.id;
+      const userId = req.params.id;
+      console.log(userId);
       try {
-         const users = await User.findByIdAndDelete({ _id: userID });
-         res.json({ users: users });
+         const user = await User.findByIdAndDelete({ _id: userId });
+         res.json({ user });
       } catch (error) {
          res.status(404).json(error);
       }

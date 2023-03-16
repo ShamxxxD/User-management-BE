@@ -9,12 +9,13 @@ class AuthController {
          const { username, email, password } = req.body;
 
          const isAdmin = username.startsWith('admin');
+
          const role = isAdmin ? 'admin' : 'subscriber';
 
-         const usernameCheck = await User.findOne({ username });
+         const usernameCheck = await User.findOne({ username }).lean();
          if (usernameCheck) return res.json({ msg: 'Username already used ', status: false });
 
-         const emailCheck = await User.findOne({ email });
+         const emailCheck = await User.findOne({ email }).lean();
          if (emailCheck) return res.json({ msg: 'Email already used ', status: false });
 
          const hashedPassword = await bcrypt.hash(password, 10);
@@ -28,7 +29,7 @@ class AuthController {
 
          return res.json({ msg: 'Create new user successfully', user, status: true });
       } catch (error) {
-         next(error);
+         return res.status(500).json(error);
       }
    }
 

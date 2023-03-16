@@ -34,9 +34,10 @@ import jwt from 'jsonwebtoken';
 class VerifyToken {
    async isValidToken(req, res, next) {
       try {
-         const token = req.body.headers.token;
+         const token = req.headers.token;
+         console.log(token);
          if (token) {
-            const accessToken = token.split(' ')[1];
+            const accessToken = token?.split(' ')[1];
             jwt.verify(accessToken, process.env.JWT_ACCESS_KEY, (err, user) => {
                if (err) {
                   return res.status(403).json('Token is not valid');
