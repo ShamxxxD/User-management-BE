@@ -46,7 +46,7 @@ class AuthController {
 
          if (user && validPassword) {
             const accessToken = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_ACCESS_KEY, {
-               expiresIn: '30m',
+               expiresIn: '10s',
             });
 
             const refreshToken = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_REFRESH_KEY, {
@@ -58,6 +58,34 @@ class AuthController {
             delete user._doc.password;
             res.status(200).json({ msg: 'Logged in successfully', user, accessToken, status: true });
          }
+      } catch (error) {
+         res.status(500).json(error);
+      }
+   }
+
+   // REFRESH TOKEN
+   async refreshToken(req, res) {
+      try {
+         const refreshToken = req.cookies.refreshToken;
+         if (!refreshToken) {
+            res.status(401).json("You're not authenticated");
+         }
+
+         jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (error, user) => {
+            if (error) return res.status(401).json(error);
+
+            const newAccessToken = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_ACCESS_KEY, {
+               expiresIn: '30m',
+            });
+
+            const newRefreshToken = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_ACCESS_KEY, {
+               expiresIn: '365d',
+            });
+
+            res.cookie('refreshToken', newRefreshToken, { httpOnly: true, secure: false, sameSite: 'strict' });
+
+            res.status(200).json({ accessToken: newAccessToken });
+         });
       } catch (error) {
          res.status(500).json(error);
       }

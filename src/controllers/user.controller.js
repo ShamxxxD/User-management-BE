@@ -4,7 +4,22 @@ class UserController {
    async getAllUsers(req, res) {
       try {
          const users = await User.find({}).lean();
-         res.json({ users: users });
+         res.json({ users });
+      } catch (error) {
+         res.status(404).json(error);
+      }
+   }
+
+   async getUsersPagination(req, res) {
+      try {
+         const page = parseInt(req.query.page) || 1;
+         const limit = parseInt(req.query.count) || 10;
+         const offset = (page - 1) * limit;
+
+         const countTotalUsers = await User.find({}).count().lean();
+         const users = await User.find({}).skip(offset).limit(limit).lean();
+
+         res.status(200).json({ users, countTotalUsers });
       } catch (error) {
          res.status(404).json(error);
       }
@@ -12,7 +27,6 @@ class UserController {
 
    async deleteUser(req, res) {
       const userId = req.params.id;
-      console.log(userId);
       try {
          const user = await User.findByIdAndDelete({ _id: userId });
          res.json({ user });
