@@ -4,9 +4,8 @@ import cors from 'cors';
 import route from './routes/index.js';
 import { connectDatabase } from './config/database/database.js';
 
-import dotenv from 'dotenv';
-
 import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
