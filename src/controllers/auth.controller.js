@@ -45,13 +45,18 @@ class AuthController {
             if (!validPassword) return res.json({ msg: 'Incorrect password !', status: false });
 
             if (user && validPassword) {
-                const accessToken = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_ACCESS_KEY, {
+                const { id, username, role, email, phone, avatar } = user;
+                const accessToken = jwt.sign({ id, username, role, email, phone, avatar }, process.env.JWT_ACCESS_KEY, {
                     expiresIn: '30m',
                 });
 
-                const refreshToken = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_REFRESH_KEY, {
-                    expiresIn: '365d',
-                });
+                const refreshToken = jwt.sign(
+                    { id, username, role, email, phone, avatar },
+                    process.env.JWT_REFRESH_KEY,
+                    {
+                        expiresIn: '365d',
+                    }
+                );
 
                 res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: false, sameSite: 'strict' });
 

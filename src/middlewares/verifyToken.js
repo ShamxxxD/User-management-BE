@@ -4,11 +4,9 @@ class VerifyToken {
     async isValidToken(req, res, next) {
         try {
             const token = req.headers.token;
-            console.log(token);
 
             if (token) {
                 const accessToken = token.split(' ')[1];
-                console.log(accessToken);
                 const secret = process.env.JWT_ACCESS_KEY;
 
                 const isValidToken = jwt.verify(accessToken, secret);
@@ -30,6 +28,7 @@ class VerifyToken {
     async isAdmin(req, res, next) {
         try {
             const token = req.headers.token;
+            console.log(token);
             if (token) {
                 const accessToken = token.split(' ')[1];
                 const secret = process.env.JWT_ACCESS_KEY;

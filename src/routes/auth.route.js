@@ -5,7 +5,7 @@ import verifyToken from '../middlewares/verifyToken.js';
 
 authRoute.post('/register', authController.registerUser);
 authRoute.post('/login', authController.loginUser);
-authRoute.post('/logout', verifyToken.isValidToken, authController.logoutUser);
+authRoute.post('/logout', authController.logoutUser);
 authRoute.post('/refresh', authController.refreshToken);
 
 export default authRoute;
