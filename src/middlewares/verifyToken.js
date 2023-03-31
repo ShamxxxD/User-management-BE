@@ -10,7 +10,6 @@ class VerifyToken {
                 const secret = process.env.JWT_ACCESS_KEY;
 
                 const isValidToken = jwt.verify(accessToken, secret);
-                console.log(isValidToken);
 
                 if (!isValidToken) {
                     return res.status(401).json('Invalid token');
@@ -28,7 +27,6 @@ class VerifyToken {
     async isAdmin(req, res, next) {
         try {
             const token = req.headers.token;
-            console.log(token);
             if (token) {
                 const accessToken = token.split(' ')[1];
                 const secret = process.env.JWT_ACCESS_KEY;
@@ -38,9 +36,8 @@ class VerifyToken {
                 if (!isValidToken) {
                     return res.status(401).json('Invalid token');
                 }
-                const role = isValidToken.role;
+                const role = isValidToken.user.role;
                 const isAdmin = role === 'admin' ? true : false;
-
                 if (!isAdmin) {
                     return res.status(401).json('You are not allowed to perform this action');
                 }
@@ -50,6 +47,7 @@ class VerifyToken {
                 return res.status(401).json("You're not authenticated");
             }
         } catch (error) {
+            console.log(error);
             return res.status(500).json(error);
         }
     }

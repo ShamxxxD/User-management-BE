@@ -4,7 +4,8 @@ const { Schema } = mongoose;
 const UserSchema = new Schema(
     {
         username: { type: String, require: true, minlength: 5, unique: true },
-        phone: { type: Number, require: false },
+        displayName: { type: String, require: false, minlength: 5 },
+        phone: { type: String, require: false },
         email: {
             type: String,
             required: true,
