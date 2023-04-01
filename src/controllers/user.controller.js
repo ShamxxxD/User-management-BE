@@ -14,11 +14,23 @@ class UserController {
 
     async getUserDetail(req, res) {
         const userId = req.params.userId;
-        console.log('Run');
-        console.log(userId);
+
         try {
             const user = await User.findById({ _id: userId }).lean();
             res.status(200).json({ user });
+        } catch (error) {
+            res.status(404).json(error);
+        }
+    }
+
+    async searchUsers(req, res) {
+        const searchQuery = req.query.q;
+        const name = new RegExp(searchQuery, `i`);
+        try {
+            const users = await User.find({
+                $or: [{ username: name }, { displayName: name }],
+            }).lean();
+            res.status(200).json({ users });
         } catch (error) {
             res.status(404).json(error);
         }

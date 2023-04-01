@@ -8,6 +8,7 @@ userRouter.patch('/change-password/:id', verifyToken.isValidToken, UserControlle
 userRouter.patch('/:id', verifyToken.isValidToken, UserController.editUser);
 userRouter.post('/register', UserController.registerUser);
 userRouter.get('/pagination', UserController.getUsersPagination);
+userRouter.get('/search', UserController.searchUsers);
 userRouter.get('/:userId', UserController.getUserDetail);
 userRouter.get('/', UserController.getAllUsers);
 
