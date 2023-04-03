@@ -3,8 +3,20 @@ const { Schema } = mongoose;
 
 const CommentSchema = new Schema(
     {
-        content: { type: Array, require: false },
-        post: { type: Schema.Types.ObjectId, ref: 'Posts', required: true },
+        comment: {
+            type: String,
+            required: true,
+        },
+        author: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Users',
+            required: true,
+        },
+        postId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Posts',
+            required: true,
+        },
     },
     { timestamps: true }
 );

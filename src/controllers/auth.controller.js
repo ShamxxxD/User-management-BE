@@ -18,7 +18,7 @@ class AuthController {
                 delete user._doc.password;
 
                 const accessToken = jwt.sign({ user }, process.env.JWT_ACCESS_KEY, {
-                    expiresIn: '1h',
+                    expiresIn: '30m',
                 });
 
                 const refreshToken = jwt.sign({ user }, process.env.JWT_REFRESH_KEY, {
@@ -55,7 +55,7 @@ class AuthController {
                 if (error) return res.status(401).json(error);
 
                 const newAccessToken = jwt.sign({ user: user.user }, process.env.JWT_ACCESS_KEY, {
-                    expiresIn: '1h',
+                    expiresIn: '30m',
                 });
                 res.status(200).json({ accessToken: newAccessToken });
             });

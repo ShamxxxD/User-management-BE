@@ -4,6 +4,7 @@ import postRoute from './post.route.js';
 import commentRoute from './comment.route.js';
 import conversationRoute from './conversation.route.js';
 import messageRoute from './message.route.js';
+import friendRoute from './friend.route.js';
 
 export default function route(app) {
     app.use('/api/users', userRoute);
@@ -12,4 +13,5 @@ export default function route(app) {
     app.use('/api/comments', commentRoute);
     app.use('/api/conversations', conversationRoute);
     app.use('/api/messages', messageRoute);
+    app.use('/api/friends', friendRoute);
 }

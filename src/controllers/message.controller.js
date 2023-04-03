@@ -20,7 +20,6 @@ class MessageController {
         try {
             const conversationId = req.params.conversationId;
             const messages = await Message.find({ conversationId });
-            console.log(messages);
             res.status(200).json({ messages });
         } catch (error) {
             console.log(error);

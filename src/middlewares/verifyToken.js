@@ -4,7 +4,6 @@ class VerifyToken {
     async isValidToken(req, res, next) {
         try {
             const token = req.headers.token;
-
             if (token) {
                 const accessToken = token.split(' ')[1];
                 const secret = process.env.JWT_ACCESS_KEY;
@@ -14,12 +13,13 @@ class VerifyToken {
                 if (!isValidToken) {
                     return res.status(401).json('Invalid token');
                 }
-
+                req.accessTokenPayload = isValidToken;
                 next();
             } else {
                 return res.status(401).json("You're not authenticated");
             }
         } catch (error) {
+            console.log(error);
             return res.status(500).json(error);
         }
     }

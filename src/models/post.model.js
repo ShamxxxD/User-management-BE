@@ -7,6 +7,7 @@ const PostSchema = new Schema(
         author: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
         video: { type: String },
         image: { type: String },
+        likes: { type: Array },
     },
     { timestamps: true }
 );

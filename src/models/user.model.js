@@ -4,7 +4,14 @@ const { Schema } = mongoose;
 const UserSchema = new Schema(
     {
         username: { type: String, require: true, minlength: 5, unique: true },
-        displayName: { type: String, require: false, minlength: 5 },
+        displayName: {
+            type: String,
+            require: false,
+            minlength: 5,
+            default: function () {
+                return this.username;
+            },
+        },
         phone: { type: String, require: false },
         email: {
             type: String,
@@ -17,7 +24,11 @@ const UserSchema = new Schema(
             ],
         },
         password: { type: String, require: true, minlength: 8 },
-        avatar: { type: String },
+        avatar: {
+            type: String,
+            default:
+                'https://firebasestorage.googleapis.com/v0/b/user-management-24176.appspot.com/o/user%20management%2Favatars%2Fno%20avatar.jpg?alt=media&token=4cb61b19-468a-4b3b-954c-29ef4424effb',
+        },
         role: { type: String },
     },
     { timestamps: true }
