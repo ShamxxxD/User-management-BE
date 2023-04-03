@@ -179,6 +179,7 @@ class PostController {
             const post = await Post.create(data);
             res.status(200).json({ post });
         } catch (error) {
+            console.log(' error:', error);
             return res.status(500).json('Lỗi');
         }
     }
