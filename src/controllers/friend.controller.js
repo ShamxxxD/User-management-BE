@@ -5,10 +5,18 @@ class FriendController {
     static async getFriends(req, res) {
         try {
             const user = await User.findById(req.params.userId);
+            
             if (!user) {
                 return res.status(404).send('User not found');
             }
-            const friends = await Friend.find({ user: req.params.userId, status: 'accepted' }).populate('friend');
+            
+                const friends = await Friend.find({
+                    $or: [
+                        { user: req.params.userId, status: 'accepted' },
+                        { friend: req.params.userId, status: 'accepted' }
+                    ]
+                }).populate('friend').populate('user')
+    
             return res.send({ friends });
         } catch (error) {
             console.error(error);
@@ -18,7 +26,6 @@ class FriendController {
 
     static async getFriendRequests(req, res) {
         try {
-            console.log(' userId:', req.params.userId);
             const user = await User.findById(req.params.userId);
             if (!user) {
                 return res.status(404).send('User not found');
@@ -82,24 +89,26 @@ class FriendController {
             return res.send(friend);
         } catch (error) {
             console.error(error);
-            return res.status(500).send('Server error');
+            return res.status(500).send('Server lỗi');
         }
     }
 
     static async deleteFriend(req, res) {
         try {
-            const user = await User.findById(req.params.userId);
+            const userId = req.accessTokenPayload.user._id;
+          
+            const user = await User.findById(userId);
             if (!user) {
                 return res.status(404).send('User not found');
             }
-
-            const friend = await Friend.findById(req.params.friendId);
-            if (!friend || friend.user.toString() !== req.params.userId) {
-                return res.status(404).send('Friend not found');
-            }
-
-            await friend.remove();
-            return res.send('Friend removed');
+            const friend = await Friend.findOneAndDelete({
+                $or: [
+                    { user: req.params.friendId,},
+                    { friend: req.params.friendId, }
+                ]
+            });
+      
+            return res.status(200).json('Friend removed');
         } catch (error) {
             console.error(error);
             return res.status(500).send('Server error');

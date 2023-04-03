@@ -16,6 +16,6 @@ friendRoute.post('/', verifyToken.isValidToken, FriendController.addFriend);
 friendRoute.patch('/:friendId', verifyToken.isValidToken, FriendController.updateFriendStatus);
 
 // Delete a friend
-friendRoute.delete('/:userId/:friendId', FriendController.deleteFriend);
+friendRoute.delete('/:friendId', verifyToken.isValidToken, FriendController.deleteFriend);
 
 export default friendRoute;
