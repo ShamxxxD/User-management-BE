@@ -44,7 +44,6 @@ class CommentController {
         try {
             const commentId = req.params.id;
             const newComment = req.body.newComment;
-            console.log(' newComment:', newComment);
 
             const comment = await Comment.findByIdAndUpdate({ _id: commentId }, { comment: newComment }, { new: true });
             res.status(200).json(comment);
@@ -55,7 +54,6 @@ class CommentController {
     }
 
     async deleteComment(req, res, next) {
-        console.log(' Run:1');
         try {
             const commentId = req.params.id;
             const comment = await Comment.findByIdAndDelete({ _id: commentId });

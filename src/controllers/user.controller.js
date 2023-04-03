@@ -15,11 +15,9 @@ class UserController {
     async getUserDetail(req, res) {
         const userId = req.params.userId;
 
-        console.log(' userId:', userId);
         try {
             const user = await User.findById({ _id: userId }).lean();
 
-            console.log('user :', user);
             res.status(200).json({ user });
         } catch (error) {
             res.status(404).json(error);
