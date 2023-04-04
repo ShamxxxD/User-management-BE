@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 class PostController {
     async getPosts(req, res, next) {
         const limit = req.query._limit;
-        const skip = req.query._skip;
+        const skip = limit * req.query._skip;
 
         try {
             const posts = await Post.aggregate([
@@ -163,7 +163,6 @@ class PostController {
         try {
             const postId = req.params.id;
 
-            console.log(' postId:', postId);
             const post = await Post.findById({ _id: postId }).populate('author').lean();
             delete post.author.password;
             return res.status(200).json({ post });

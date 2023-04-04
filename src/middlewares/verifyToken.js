@@ -19,7 +19,6 @@ class VerifyToken {
                 return res.status(401).json("You're not authenticated");
             }
         } catch (error) {
-            console.log(error);
             return res.status(500).json(error);
         }
     }

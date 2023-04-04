@@ -18,7 +18,7 @@ class AuthController {
                 delete user._doc.password;
 
                 const accessToken = jwt.sign({ user }, process.env.JWT_ACCESS_KEY, {
-                    expiresIn: '30m',
+                    expiresIn: '30s',
                 });
 
                 const refreshToken = jwt.sign({ user }, process.env.JWT_REFRESH_KEY, {
@@ -48,14 +48,14 @@ class AuthController {
         try {
             const refreshToken = req.cookies.refreshToken;
             if (!refreshToken) {
-                res.status(401).json("You're not authenticated");
+              return res.status(401).json("You're not authenticated");
             }
 
             jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (error, user) => {
                 if (error) return res.status(401).json(error);
 
                 const newAccessToken = jwt.sign({ user: user.user }, process.env.JWT_ACCESS_KEY, {
-                    expiresIn: '30m',
+                    expiresIn: '30s',
                 });
                 res.status(200).json({ accessToken: newAccessToken });
             });
